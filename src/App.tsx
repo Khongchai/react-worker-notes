@@ -1,6 +1,7 @@
-import logo from "./logo.svg";
-import "./App.css";
 import { useEffect, useState } from "react";
+import "./App.css";
+import TextForContextTesting from "./component/textForContextTesting.tsx";
+import logo from "./logo.svg";
 //@ts-ignore
 import Worker from "./worker/foo.worker.ts";
 
@@ -14,7 +15,7 @@ import Worker from "./worker/foo.worker.ts";
  *      => Zum Ersten, natürlich Typescript installieren.
  *      => declaration files, or just @ts-ignore
  *      => Change the file name of the worker to foo.worker.ts and update the config regex.
- * - load worker with context,
+ * - load worker with context, <<<< in progress
  * -  use worker with canvas
  * - try worker with react context
  * - update worker with react context from different files
@@ -37,9 +38,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+        <TextForContextTesting />
         <a
           className="App-link"
           href="https://reactjs.org"
