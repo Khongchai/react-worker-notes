@@ -1,5 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+
+/**
+ *  TODO list
+ *  - get worker running with React
+ * -  get worker running with TypeScript
+ * - load worker with context,
+ * -  use worker with canvas
+ * - try worker with react context
+ */
 
 function App() {
   return (
