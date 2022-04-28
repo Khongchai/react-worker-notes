@@ -1,7 +1,8 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
-import Worker from "./worker/foo.worker.js";
+//@ts-ignore
+import Worker from "./worker/foo.worker.ts";
 
 /**
  *  TODO list
@@ -9,10 +10,14 @@ import Worker from "./worker/foo.worker.js";
  *      => use worker-loader
  *      => Make sure the file name of the worker matches the regex format in the config.
  *      => Also....npm run eject
- * -  get worker running with TypeScript
+ * -  get worker running with TypeScript => done.
+ *      => Zum Ersten, natürlich Typescript installieren.
+ *      => declaration files, or just @ts-ignore
+ *      => Change the file name of the worker to foo.worker.ts and update the config regex.
  * - load worker with context,
  * -  use worker with canvas
  * - try worker with react context
+ * - update worker with react context from different files
  */
 
 function App() {

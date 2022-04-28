@@ -341,7 +341,7 @@ module.exports = function (webpackEnv) {
       strictExportPresence: true,
       rules: [
         {
-          test: /\.worker\.js$/,
+          test: /\.worker\.ts$/,
           use: { loader: "worker-loader" },
         },
         // Handle node_modules packages that contain sourcemaps
