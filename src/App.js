@@ -1,5 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
+import { useEffect, useState } from "react";
 
 /**
  *  TODO list
@@ -11,6 +12,12 @@ import "./App.css";
  */
 
 function App() {
+  const [worker, setWorker] = useState(null);
+
+  useEffect(() => {
+    setWorker(new Worker("worker/workerEntryPoint.js"));
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
