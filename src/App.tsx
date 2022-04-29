@@ -20,7 +20,7 @@ import "./index.css";
  *      => Change the file name of the worker to foo.worker.ts and update the config regex.
  * - load worker with context => done
  *      => Do it normally.
- * - Try worker with react context => done
+ * - Try worker with react ref=> in progress
  *      = Do it normally.
  * -  use worker with canvas
  */
@@ -48,7 +48,11 @@ import "./index.css";
 function App() {
   const [worker, setWorker] = useState<Worker>(null);
   const [count, setCount] = useState(0);
+
   const canvasRef = useRef(null);
+
+  // just to test if ref works with worker (spoiler, it does)
+  const counter2Ref = useRef(0);
 
   useEffect(() => {
     setWorker(new Worker());
@@ -58,12 +62,14 @@ function App() {
     if (worker && canvasRef.current) {
       worker.postMessage("Worker up and running");
       const canvas = canvasRef.current.transferControlToOffscreen();
+
       worker.postMessage(
         {
           operation: "SET_CANVAS",
           width: 500,
           height: 500,
           canvas,
+          counter2Ref,
         },
         [canvas]
       );
@@ -79,6 +85,7 @@ function App() {
       <div className="App" style={{ position: "relative" }}>
         <header className="App-header">
           <Count count={count} />
+          <Count count={"(ref) " + counter2Ref.current} />
           <canvas
             ref={canvasRef}
             width="500"
