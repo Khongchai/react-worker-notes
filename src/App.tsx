@@ -85,7 +85,6 @@ function App() {
       <div className="App" style={{ position: "relative" }}>
         <header className="App-header">
           <Count count={count} />
-          <Count count={"(ref) " + counter2Ref.current} />
           <canvas
             ref={canvasRef}
             width="500"
