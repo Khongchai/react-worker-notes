@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import TextForContextTesting from "./component/textForContextTesting.tsx";
-import logo from "./logo.svg";
 //@ts-ignore
 import Worker from "./worker/foo.worker.ts";
+import { Worker as WorkerContext } from "./context/workerContext.ts";
+import Count from "./component/count.tsx";
+import logo from "./logo.svg";
+import "./index.css";
 
 /**
  *  TODO list
@@ -15,40 +18,88 @@ import Worker from "./worker/foo.worker.ts";
  *      => Zum Ersten, natürlich Typescript installieren.
  *      => declaration files, or just @ts-ignore
  *      => Change the file name of the worker to foo.worker.ts and update the config regex.
- * - load worker with context, <<<< in progress
+ * - load worker with context => done
+ *      => Do it normally.
+ * - Try worker with react context => done
+ *      = Do it normally.
  * -  use worker with canvas
- * - try worker with react context
- * - update worker with react context from different files
+ */
+
+/**
+ * What is attepts to do:
+ *
+ * A simple counter with a worker.
+ *
+ * Tell the worker to increment a value from textForCokntextTesting.tsx file.
+ *
+ * Listen to the worker message and update the counter from this file.
+ *
+ * Update the state accordingly and pass it to count.tsx.
+ *
+ * The worker also draws the same number of lines as the count in the background canvas.
+ *
+ * TODO
+ * Add react spinning logo in the main thread
+ *
+ * Do some verlet curtain thing with worker.
+ *
  */
 
 function App() {
-  const [worker, setWorker] = useState(null);
+  const [worker, setWorker] = useState<Worker>(null);
+  const [count, setCount] = useState(0);
+  const canvasRef = useRef(null);
 
   useEffect(() => {
     setWorker(new Worker());
   }, []);
 
   useEffect(() => {
-    if (worker) {
-      worker.postMessage("Hello");
+    if (worker && canvasRef.current) {
+      worker.postMessage("Worker up and running");
+      const canvas = canvasRef.current.transferControlToOffscreen();
+      worker.postMessage(
+        {
+          operation: "SET_CANVAS",
+          width: 500,
+          height: 500,
+          canvas,
+        },
+        [canvas]
+      );
+
+      worker.onmessage = (e: any) => {
+        setCount(parseInt(e.data));
+      };
     }
   }, [worker]);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <TextForContextTesting />
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <WorkerContext.Provider value={worker}>
+      <div className="App" style={{ position: "relative" }}>
+        <header className="App-header">
+          <Count count={count} />
+          <canvas
+            ref={canvasRef}
+            width="500"
+            height="500"
+            style={{ padding: "16px 0" }}
+          ></canvas>
+          <TextForContextTesting />
+        </header>
+      </div>
+      <img
+        src={logo}
+        className="App-logo"
+        alt="logo"
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+        }}
+      />
+      ;
+    </WorkerContext.Provider>
   );
 }
 
