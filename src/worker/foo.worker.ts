@@ -1,4 +1,4 @@
-import { draw } from "./draw.ts";
+import { draw } from "./draw";
 
 const counter = {
   count: 0,

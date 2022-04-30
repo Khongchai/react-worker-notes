@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { Worker as WorkerContext } from "../context/workerContext.ts";
+import { Worker as WorkerContext } from "../context/workerContext";
 
 export default function TextForContextTesting() {
-  const worker: Worker = useContext(WorkerContext);
+  const worker: Worker = useContext(WorkerContext)!;
 
   return (
     <p

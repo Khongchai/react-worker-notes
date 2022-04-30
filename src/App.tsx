@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-import TextForContextTesting from "./component/textForContextTesting.tsx";
-//@ts-ignore
+import TextForContextTesting from "./component/textForContextTesting";
+// import Worker from "worker-loader!./worker/foo.worker.ts";
+
 import Worker from "./worker/foo.worker.ts";
-import { Worker as WorkerContext } from "./context/workerContext.ts";
-import Count from "./component/count.tsx";
+import { Worker as WorkerContext } from "./context/workerContext";
+import Count from "./component/count";
 import logo from "./logo.svg";
 import "./index.css";
 
@@ -46,10 +47,10 @@ import "./index.css";
  */
 
 function App() {
-  const [worker, setWorker] = useState<Worker>(null);
+  const [worker, setWorker] = useState<Worker | null>(null);
   const [count, setCount] = useState(0);
 
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // just to test if ref works with worker (spoiler, it does)
   const counter2Ref = useRef(0);
@@ -61,7 +62,7 @@ function App() {
   useEffect(() => {
     if (worker && canvasRef.current) {
       worker.postMessage("Worker up and running");
-      const canvas = canvasRef.current.transferControlToOffscreen();
+      const canvas = (canvasRef.current as any).transferControlToOffscreen();
 
       worker.postMessage(
         {
@@ -81,7 +82,7 @@ function App() {
   }, [worker]);
 
   return (
-    <WorkerContext.Provider value={worker}>
+    <WorkerContext.Provider value={worker!}>
       <div className="App" style={{ position: "relative" }}>
         <header className="App-header">
           <Count count={count} />

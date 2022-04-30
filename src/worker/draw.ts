@@ -5,7 +5,7 @@ export function draw(
   counter: { count: number }
 ) {
   //draw a line with the canvas
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d")!;
 
   ctx.strokeStyle = "#61dafb";
 
