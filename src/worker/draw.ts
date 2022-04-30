@@ -47,8 +47,7 @@ function verticalChain({
   to: { x: number; y: number };
   ctx: CanvasRenderingContext2D;
 }) {
-  const points = generateVerticalPoints(from.x, to.x, 10, from.y);
-  console.log(points);
+  const points = generateVerticalPoints(from.y, to.y, 10, from.x);
 
   generateSticksFromPoints({ ctx, points });
 
@@ -63,14 +62,14 @@ function verticalChain({
     point1: number,
     point2: number,
     amount: number,
-    y: number
+    x: number
   ): { x: number; y: number }[] {
     const points: { x: number; y: number }[] = [];
 
     for (let i = 0; i < amount; i++) {
       const generatedPoint = point1 + ((point2 - point1) * i) / amount;
 
-      points.push({ x: generatedPoint, y });
+      points.push({ x, y: generatedPoint });
     }
 
     return points;
